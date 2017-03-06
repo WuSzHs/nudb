@@ -1,6 +1,7 @@
 env/
 dist/
 *.pyc
+*.in
 MANIFEST
 setup.py
 test.py
