@@ -33,6 +33,7 @@ result = nudb.rput(data, 'text', recBeg)
 ```
 
 ## Put record by file
+** DON'T USE, UNFINISHED **  
 ```python
 
 # json format
@@ -54,5 +55,4 @@ result = nudb.search(query)
 ```
 
 # Undo
-[ ] fput
-[ ] Error handler
++ Error handler
