@@ -1,0 +1,6 @@
+env/
+dist/
+*.pyc
+MANIFEST
+setup.py
+test.py
