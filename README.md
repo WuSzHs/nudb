@@ -33,7 +33,7 @@ result = nudb.rput(data, 'text', recBeg)
 ```
 
 ## Put record by file
-** DON'T USE, UNFINISHED **  
+**DON'T USE, UNFINISHED**  
 ```python
 
 # json format
