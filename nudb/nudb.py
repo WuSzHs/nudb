@@ -69,7 +69,7 @@ class NuDB(object):
         #print('fput options: %s' % opts)
         res = requests.post(url, data=opts, files=fileData)
         print('fput response: %s' % res.status_code)
-        return resi.text
+        return res.text
 
     def rdel(self, rid):
         url = self.host + "rdel"
