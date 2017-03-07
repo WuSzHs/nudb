@@ -2,7 +2,4 @@ env/
 dist/
 nudb.egg-info/
 *.pyc
-*.in
 MANIFEST
-setup.py
-test.py
