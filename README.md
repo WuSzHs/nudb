@@ -4,10 +4,6 @@
 # Setup
 ```bash
 pip install nudb
-
-# or
-git clone https://github.com/WuSzHs/nudb.git
-
 ```
 
 # Usage
@@ -33,7 +29,6 @@ result = nudb.rput(data, 'text', recBeg)
 ```
 
 ## Put record by file
-**DON'T USE, UNFINISHED**  
 ```python
 
 # json format
@@ -42,6 +37,11 @@ result = nudb.fput(filePath, 'json')
 # text format
 result = nudb.fput(filePath, 'text', recBeg)
 
+```
+
+## Get record by rid
+```python
+result = nudb.rget(rid)
 ```
 
 ## Delete record by rid

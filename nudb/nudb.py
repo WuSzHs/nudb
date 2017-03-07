@@ -70,6 +70,20 @@ class NuDB(object):
         res = requests.post(url, data=opts, files=fileData)
         print('fput response: %s' % res.status_code)
         return res.text
+    
+    def rget(self, rid):
+        url = self.host + "rget"
+        
+        opts = {
+            'db': self.db,
+            'rid': rid,
+            'out': 'json'
+        }
+        
+        #print('rget options: %s' % opts)
+        res = requests.get(url, opts)
+        print('rget response: %s' % res.status_code)
+        return res.text
 
     def rdel(self, rid):
         url = self.host + "rdel"
