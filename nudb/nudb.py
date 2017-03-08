@@ -21,7 +21,7 @@ class NuDB(object):
     def connect(self, host, port, db):
         self.api = 'http://'+ host + ':' + port + '/nudb/'
         self.db = db
-        print('Connect to: %s, db: %s' % (self.host, self.db))
+        print('API: %s, db: %s' % (self.api, self.db))
 
     def rput(self, data, kind, *recBeg):
         """ kind: json/text """
