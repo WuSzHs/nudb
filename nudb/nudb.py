@@ -12,24 +12,31 @@ class NuDB(object):
         reload(sys)
         sys.setdefaultencoding("utf-8")
         
-        self.host = 'localhost'
+        # default host and port
+        host = 'localhost'
+        port = '5800'
+        self.api = 'http://'+ host + ':' + port + '/nudb/'
         self.db = 'test'
 
-    def connect(self, host, db):
-        self.host = host
+    def connect(self, host, port, db):
+        self.api = 'http://'+ host + ':' + port + '/nudb/'
         self.db = db
         print('Connect to: %s, db: %s' % (self.host, self.db))
 
     def rput(self, data, kind, *recBeg):
         """ kind: json/text """
-        url = self.host + 'rput'
+        url = self.api + 'rput'
+        
         if kind == 'text':
-            opts = {
-                'db': self.db,
-                'data': json.dumps(data),
-                'recBeg': recBeg,
-                'format': kind
-            }
+            if len(recBeg) == 1:
+                opts = {
+                    'db': self.db,
+                    'data': json.dumps(data),
+                    'recBeg': recBeg[0],
+                    'format': kind
+                }
+            else:
+                return 'Wrong recBeg'
         elif kind == 'json':
             opts = {
                 'db': self.db,
@@ -46,18 +53,21 @@ class NuDB(object):
     
     def fput(self, filePath, kind, *recBeg):
         """ kind: json/text """
-        url = self.host + "fput"
+        url = self.api + "fput"
 
         fileData = {
-            'file': codecs.open(filePath, 'r', 'utf-8')
+            'file': codecs.open(filePath, 'rb', 'utf-8')
         }
 
         if kind == 'text':
-            opts = {
-                'db': self.db,
-                'recBeg': recBeg,
-                'format': kind
-            }
+            if len(recBeg) == 1:
+                opts = {
+                    'db': self.db,
+                    'recBeg': recBeg[0],
+                    'format': kind
+                }
+            else:
+                return 'Wrong recBeg'
         elif kind == 'json':
             opts = {
                 'db': self.db,
@@ -67,12 +77,13 @@ class NuDB(object):
             return 'Wrong format'
 
         #print('fput options: %s' % opts)
-        res = requests.post(url, data=opts, files=fileData)
+        #print(fileData)
+        res = requests.post(url, opts, files=fileData)
         print('fput response: %s' % res.status_code)
         return res.text
-    
+
     def rget(self, rid):
-        url = self.host + "rget"
+        url = self.api + "rget"
         
         opts = {
             'db': self.db,
@@ -86,7 +97,7 @@ class NuDB(object):
         return res.text
 
     def rdel(self, rid):
-        url = self.host + "rdel"
+        url = self.api + "rdel"
         
         opts = {
             'db': self.db,
@@ -100,7 +111,7 @@ class NuDB(object):
         return res.text
     
     def search(self, query):
-        url = self.host + "query"
+        url = self.api + "query"
         
         opts = {
             'db': self.db,
