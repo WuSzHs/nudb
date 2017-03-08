@@ -29,8 +29,8 @@ result = nudb.rput(data, 'text', recBeg)
 ```
 
 ## Put record by file
-```python
 **UNFINISHED**
+```python
 # json format
 result = nudb.fput(filePath, 'json')
 
