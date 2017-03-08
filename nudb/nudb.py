@@ -32,7 +32,7 @@ class NuDB(object):
                 opts = {
                     'db': self.db,
                     'data': json.dumps(data),
-                    'recBeg': recBeg[0],
+                    'recbeg': recBeg[0],
                     'format': kind
                 }
             else:
@@ -63,7 +63,7 @@ class NuDB(object):
             if len(recBeg) == 1:
                 opts = {
                     'db': self.db,
-                    'recBeg': recBeg[0],
+                    'recbeg': recBeg[0],
                     'format': kind
                 }
             else:
