@@ -46,9 +46,8 @@ class NuDB(object):
         else:
             return 'Wrong format'
 
-        #print('rput options: %s' % opts)
         res = requests.post(url, opts)
-        print('rput response: %s' % res.status_code)
+        print('[rput] Response: %s' % res.status_code)
         return res.text
     
     def fput(self, filePath, kind, *recBeg):
@@ -76,10 +75,8 @@ class NuDB(object):
         else:
             return 'Wrong format'
 
-        #print('fput options: %s' % opts)
-        #print(fileData)
         res = requests.post(url, opts, files=fileData)
-        print('fput response: %s' % res.status_code)
+        print('[fput] Response: %s' % res.status_code)
         return res.text
 
     def rget(self, rid):
@@ -91,9 +88,8 @@ class NuDB(object):
             'out': 'json'
         }
         
-        #print('rget options: %s' % opts)
         res = requests.get(url, opts)
-        print('rget response: %s' % res.status_code)
+        print('[rget] Response: %s' % res.status_code)
         return res.text
 
     def rdel(self, rid):
@@ -105,9 +101,8 @@ class NuDB(object):
             'out': 'json'
         }
         
-        #print('rdel options: %s' % opts)
         res = requests.post(url, opts)
-        print('rdel response: %s' % res.status_code)
+        print('[rdel] Response: %s' % res.status_code)
         return res.text
     
     def search(self, query):
@@ -119,8 +114,7 @@ class NuDB(object):
             'out': 'json'
         }
         
-        #print('search options: %s' % opts)
         res = requests.get(url, opts)
-        print('search response: %s' % res.status_code)
+        print('[search] Response: %s' % res.status_code)
         return res.text
 
