@@ -1,7 +1,7 @@
 # NuDB
 > A database and search engine.
 
-# Setup
+# Install
 ```bash
 pip install nudb
 ```
@@ -9,12 +9,13 @@ pip install nudb
 # Usage
 ```python
 from nudb import NuDB
+
 nudb = NuDB()
 ```
 
 ## Connect to NuDB
 ```python
-nudb.connect('host', 'db')
+nudb.connect('host', 'port', 'db')
 ```
 
 ## Put record
@@ -29,7 +30,6 @@ result = nudb.rput(data, 'text', recBeg)
 ```
 
 ## Put record by file
-**UNFINISHED**
 ```python
 # json format
 result = nudb.fput(filePath, 'json')
@@ -54,5 +54,3 @@ result = nudb.rdel(rid)
 result = nudb.search(query)
 ```
 
-# Undo
-+ Error handler
