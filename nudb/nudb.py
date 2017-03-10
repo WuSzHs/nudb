@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import os, sys
+import re
 import codecs
 import json
-import logging
 import requests
+import tools
 
 class NuDB(object):
 
@@ -26,23 +27,39 @@ class NuDB(object):
     def rput(self, data, kind, *recBeg):
         """ kind: json/text """
         url = self.api + 'rput'
-        
-        if kind == 'text':
+
+        if data == "":
+            return 'Empty data'
+
+        if kind == 'text' and isinstance(data, str):
             if len(recBeg) == 1:
+                data = re.sub('\\\\\\\\','\\\\', data)
                 opts = {
                     'db': self.db,
-                    'data': json.dumps(data),
+                    'data': data,
                     'recbeg': recBeg[0],
                     'format': kind
                 }
             else:
                 return 'Wrong recBeg'
         elif kind == 'json':
-            opts = {
-                'db': self.db,
-                'data': json.dumps(data),
-                'format': kind
-            }
+            check = tools.check_JSON(data)
+            if check == 1:
+                # JSON object
+                opts = {
+                    'db': self.db,
+                    'data': json.dumps(data),
+                    'format': kind
+                }
+            elif check == 2:
+                # JSON string
+                opts = {
+                    'db': self.db,
+                    'data': data,
+                    'format': kind
+                }
+            else:
+                return 'Invalid JSON format'
         else:
             return 'Wrong format'
 
@@ -105,6 +122,47 @@ class NuDB(object):
         print('[rdel] Response: %s' % res.status_code)
         return res.text
     
+    def rupdate(self, rid, data, kind):
+        """ kind: json/text """
+        url = self.api + "rupdate"
+        record = ""
+        
+        if rid == "":
+            return 'Empty rid'
+        if data == "":
+            return 'Empty data'
+
+        if kind == 'text' and isinstance(data, str):
+            record = re.sub('\\\\\\\\','\\\\', data)
+            opts = {
+                'db': self.db,
+                'getrec': 'n',
+                'out': 'json',
+                'rid': rid,
+                'record': record
+            }
+            res = requests.post(url, opts)
+            print('[rupdate] Response: %s' % res.status_code)
+            return res.text
+
+        elif kind == 'json':
+            """ Use rdel + rput, because rupdate of JSON format is currently not supported."""
+            check = tools.check_JSON(data)
+            
+            if check >= 1:
+                # rdel
+                res = self.rdel(rid)
+                obj = json.loads(res)
+                
+                if 'error' not in obj['result'][0].keys():
+                    # delete successful -> rput
+                    res = self.rput(data, kind)
+                return res
+            else:
+                return 'Invalid JSON format'
+        else:
+            return 'Wrong format'
+                
     def search(self, query):
         url = self.api + "query"
         
