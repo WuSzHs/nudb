@@ -7,6 +7,19 @@ pip install nudb
 ```
 
 # Usage
+
+## Format
++ Support JSON and Gais record(text)
+	+ Gais record
+		+ Field start with '@'
+		+ field and value are separated by ':'
+		+ field-value pairs are seprated by '\n'
+		+ For example:
+		```python
+		data = "@id:1\n@name:First\n@url:http://www.google.com"
+		```
+
+## Import
 ```python
 from nudb import NuDB
 
@@ -49,8 +62,16 @@ result = nudb.rget(rid)
 result = nudb.rdel(rid)
 ```
 
+## Update record by rid
+```python
+# json format
+result = nudb.rupdate(rid, data, 'json')
+
+# text format
+result = nudb.rupdate(rid, data, 'text')
+```
+
 ## Search
 ```python
 result = nudb.search(query)
 ```
-
