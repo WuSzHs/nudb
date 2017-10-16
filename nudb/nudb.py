@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os, sys
-import re
-import codecs
-import json
-import requests
-import tools
+import os, sys, re, codecs, json, requests, tools
 
 class NuDB(object):
 
@@ -24,39 +19,39 @@ class NuDB(object):
         self.db = db
         print('API: %s, db: %s' % (self.api, self.db))
 
-    def rput(self, data, kind, *recBeg):
-        """ kind: json/text """
+    def rput(self, data, data_type, *recBeg):
+        """ data_type: json/text """
         url = self.api + 'rput'
 
         if data == "":
             return 'Empty data'
 
-        if kind == 'text' and isinstance(data, str):
+        if data_type == 'text' and isinstance(data, str):
             if len(recBeg) == 1:
                 data = re.sub('\\\\\\\\','\\\\', data)
                 opts = {
                     'db': self.db,
                     'data': data,
                     'recbeg': recBeg[0],
-                    'format': kind
+                    'format': data_type
                 }
             else:
                 return 'Wrong recBeg'
-        elif kind == 'json':
+        elif data_type == 'json':
             check = tools.check_JSON(data)
             if check == 1:
                 # JSON object
                 opts = {
                     'db': self.db,
                     'data': json.dumps(data),
-                    'format': kind
+                    'format': data_type
                 }
             elif check == 2:
                 # JSON string
                 opts = {
                     'db': self.db,
                     'data': data,
-                    'format': kind
+                    'format': data_type
                 }
             else:
                 return 'Invalid JSON format'
@@ -67,27 +62,27 @@ class NuDB(object):
         print('[rput] Response: %s' % res.status_code)
         return res.text
     
-    def fput(self, filePath, kind, *recBeg):
-        """ kind: json/text """
+    def fput(self, filePath, data_type, *recBeg):
+        """ data_type: json/text """
         url = self.api + "fput"
 
         fileData = {
             'file': codecs.open(filePath, 'rb', 'utf-8')
         }
 
-        if kind == 'text':
+        if data_type == 'text':
             if len(recBeg) == 1:
                 opts = {
                     'db': self.db,
                     'recbeg': recBeg[0],
-                    'format': kind
+                    'format': data_type
                 }
             else:
                 return 'Wrong recBeg'
-        elif kind == 'json':
+        elif data_type == 'json':
             opts = {
                 'db': self.db,
-                'format': kind
+                'format': data_type
             }
         else:
             return 'Wrong format'
@@ -122,8 +117,8 @@ class NuDB(object):
         print('[rdel] Response: %s' % res.status_code)
         return res.text
     
-    def rupdate(self, rid, data, kind):
-        """ kind: json/text """
+    def rupdate(self, rid, data, data_type):
+        """ data_type: json/text """
         url = self.api + "rupdate"
         record = ""
         
@@ -132,7 +127,7 @@ class NuDB(object):
         if data == "":
             return 'Empty data'
 
-        if kind == 'text' and isinstance(data, str):
+        if data_type == 'text' and isinstance(data, str):
             record = re.sub('\\\\\\\\','\\\\', data)
             opts = {
                 'db': self.db,
@@ -145,7 +140,7 @@ class NuDB(object):
             print('[rupdate] Response: %s' % res.status_code)
             return res.text
 
-        elif kind == 'json':
+        elif data_type == 'json':
             """ Use rdel + rput, because rupdate of JSON format is currently not supported."""
             check = tools.check_JSON(data)
             
@@ -156,7 +151,7 @@ class NuDB(object):
                 
                 if 'error' not in obj['result'][0].keys():
                     # delete successful -> rput
-                    res = self.rput(data, kind)
+                    res = self.rput(data, data_type)
                 return res
             else:
                 return 'Invalid JSON format'
