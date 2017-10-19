@@ -1,23 +1,21 @@
 # NuDB
-> A database and search engine.
-
-# Install
+## Install
 ```bash
 pip install nudb
 ```
 
-# Usage
+## Usage
 
 ## Format
-+ Support JSON and Gais record(text)
-	+ Gais record
-		+ Field start with '@'
-		+ field and value are separated by ':'
-		+ field-value pairs are seprated by '\n'
-		+ For example:
-		```python
-		data = "@id:1\n@name:First\n@url:http://www.google.com"
-		```
++ GAIS record(text)
+	+ Field start with '@'
+	+ field and value are separated by ':'
+	+ field-value pairs are seprated by '\n'
+	+ For example:
+	```python
+	data = "@id:1\n@name:First\n@url:http://www.google.com"
+	```
++ JSON
 
 ## Import
 ```python
@@ -33,13 +31,11 @@ nudb.connect('host', 'port', 'db')
 
 ## Put record
 ```python
-
 # json format
 result = nudb.rput(data, 'json')
 
 # text format
 result = nudb.rput(data, 'text', recBeg)
-
 ```
 
 ## Put record by file
@@ -49,7 +45,6 @@ result = nudb.fput(filePath, 'json')
 
 # text format
 result = nudb.fput(filePath, 'text', recBeg)
-
 ```
 
 ## Get record by rid
