@@ -22,11 +22,13 @@ class NuDB(object):
     def rput(self, data, data_type, *recBeg):
         """ data_type: json/text """
         url = self.api + 'rput'
-
+        
         if data == "":
-            return 'Empty data'
+            return 'Empty data.'
 
+        # data type: text
         if data_type == 'text' and isinstance(data, str):
+            # 檢查是否有recBeg
             if len(recBeg) == 1:
                 data = re.sub('\\\\\\\\','\\\\', data)
                 opts = {
@@ -36,8 +38,9 @@ class NuDB(object):
                     'format': data_type
                 }
             else:
-                return 'Wrong recBeg'
+                return 'Must have recBeg.'
         elif data_type == 'json':
+            # 檢查為是否為正確的JSON格式, 若正確則判斷是JSON object 或 string
             check = tools.check_JSON(data)
             if check == 1:
                 # JSON object
@@ -54,9 +57,9 @@ class NuDB(object):
                     'format': data_type
                 }
             else:
-                return 'Invalid JSON format'
+                return 'Invalid JSON format.'
         else:
-            return 'Wrong format'
+            return 'Wrong format. Must be \'json\' or \'text\'.'
 
         res = requests.post(url, opts)
         print('[rput] Response: %s' % res.status_code)
@@ -71,6 +74,7 @@ class NuDB(object):
         }
 
         if data_type == 'text':
+            # 檢查是否有recBeg
             if len(recBeg) == 1:
                 opts = {
                     'db': self.db,
@@ -78,14 +82,14 @@ class NuDB(object):
                     'format': data_type
                 }
             else:
-                return 'Wrong recBeg'
+                return 'Must have recBeg.'
         elif data_type == 'json':
             opts = {
                 'db': self.db,
                 'format': data_type
             }
         else:
-            return 'Wrong format'
+            return 'Wrong format. Must be \'json\' or \'text\'.'
 
         res = requests.post(url, opts, files=fileData)
         print('[fput] Response: %s' % res.status_code)
@@ -122,41 +126,37 @@ class NuDB(object):
         url = self.api + "rupdate"
         record = ""
         
-        if rid == "":
-            return 'Empty rid'
-        if data == "":
-            return 'Empty data'
+        if rid == "" or data == "":
+            return 'Must have rid and data.'
 
         if data_type == 'text' and isinstance(data, str):
+            # replace \\ -> \
             record = re.sub('\\\\\\\\','\\\\', data)
-            opts = {
-                'db': self.db,
-                'getrec': 'n',
-                'out': 'json',
-                'rid': rid,
-                'record': record
-            }
-            res = requests.post(url, opts)
-            print('[rupdate] Response: %s' % res.status_code)
-            return res.text
-
         elif data_type == 'json':
-            """ Use rdel + rput, because rupdate of JSON format is currently not supported."""
+            #檢查是 JSON object 或 string
             check = tools.check_JSON(data)
             
-            if check >= 1:
-                # rdel
-                res = self.rdel(rid)
-                obj = json.loads(res)
-                
-                if 'error' not in obj['result'][0].keys():
-                    # delete successful -> rput
-                    res = self.rput(data, data_type)
-                return res
+            if check == 1:
+                # json object
+                record = json.dumps(data)
+            else if check == 2:
+                # json string
+                record = data
             else:
                 return 'Invalid JSON format'
-        else:
-            return 'Wrong format'
+        else:            
+            return 'Wrong format. Must be \'json\' or \'text\'.'
+
+        opts = {
+            'db': self.db,
+            'getrec': 'n',
+            'out': 'json',
+            'rid': rid,
+            'record': record
+        }
+        res = requests.post(url, opts)
+        print('[rupdate] Response: %s' % res.status_code)
+        return res.text
                 
     def search(self, query):
         url = self.api + "query"
