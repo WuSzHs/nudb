@@ -21,22 +21,23 @@ class NuDB(object):
 
     def rput(self, data, data_type, *recBeg):
         """ data_type: json/text """
-        url = self.api + 'rput'
-        
         if data == "":
             return 'Empty data.'
+
+        url = self.api + 'rput'
+        opts = {
+            'db': self.db,
+            'data': data,
+            'format': data_type
+        }
 
         # data type: text
         if data_type == 'text' and isinstance(data, str):
             # 檢查是否有recBeg
             if len(recBeg) == 1:
-                data = re.sub('\\\\\\\\','\\\\', data)
-                opts = {
-                    'db': self.db,
-                    'data': data,
-                    'recbeg': recBeg[0],
-                    'format': data_type
-                }
+                # replace \\ -> \
+                opts['data'] = re.sub('\\\\\\\\','\\\\', data)
+                opts['recbeg'] = recBeg[0]
             else:
                 return 'Must have recBeg.'
         elif data_type == 'json':
@@ -44,22 +45,11 @@ class NuDB(object):
             check = tools.check_JSON(data)
             if check == 1:
                 # JSON object
-                opts = {
-                    'db': self.db,
-                    'data': json.dumps(data),
-                    'format': data_type
-                }
-            elif check == 2:
-                # JSON string
-                opts = {
-                    'db': self.db,
-                    'data': data,
-                    'format': data_type
-                }
-            else:
+                opts ['data'] = json.dumps(data)
+            elif check < 1:
                 return 'Invalid JSON format.'
         else:
-            return 'Wrong format. Must be \'json\' or \'text\'.'
+            return "Wrong format. Must be 'json' or 'text'."
 
         res = requests.post(url, opts)
         print('[rput] Response: %s' % res.status_code)
@@ -68,28 +58,23 @@ class NuDB(object):
     def fput(self, filePath, data_type, *recBeg):
         """ data_type: json/text """
         url = self.api + "fput"
-
+        opts = {
+            'db': self.db,
+            'format': data_type
+        }
         fileData = {
             'file': codecs.open(filePath, 'rb', 'utf-8')
         }
 
+        if data_type != 'text' and data_type != 'json':
+            return "Wrong format. Must be 'json' or 'text'."
+
         if data_type == 'text':
             # 檢查是否有recBeg
             if len(recBeg) == 1:
-                opts = {
-                    'db': self.db,
-                    'recbeg': recBeg[0],
-                    'format': data_type
-                }
+                opts['recbeg'] = recBeg[0]
             else:
                 return 'Must have recBeg.'
-        elif data_type == 'json':
-            opts = {
-                'db': self.db,
-                'format': data_type
-            }
-        else:
-            return 'Wrong format. Must be \'json\' or \'text\'.'
 
         res = requests.post(url, opts, files=fileData)
         print('[fput] Response: %s' % res.status_code)
@@ -124,36 +109,32 @@ class NuDB(object):
     def rupdate(self, rid, data, data_type):
         """ data_type: json/text """
         url = self.api + "rupdate"
-        record = ""
+        opts = {
+            'db': self.db,
+            'getrec': 'n',
+            'out': 'json',
+            'rid': rid,
+            'record': data
+        }
         
         if rid == "" or data == "":
             return 'Must have rid and data.'
 
         if data_type == 'text' and isinstance(data, str):
             # replace \\ -> \
-            record = re.sub('\\\\\\\\','\\\\', data)
+            opts['record'] = re.sub('\\\\\\\\','\\\\', data)
         elif data_type == 'json':
             #檢查是 JSON object 或 string
             check = tools.check_JSON(data)
             
             if check == 1:
                 # json object
-                record = json.dumps(data)
-            else if check == 2:
-                # json string
-                record = data
-            else:
+                opts['record'] = json.dumps(data)
+            elif check < 1:
                 return 'Invalid JSON format'
         else:            
-            return 'Wrong format. Must be \'json\' or \'text\'.'
+            return "Wrong format. Must be 'json' or 'text'."
 
-        opts = {
-            'db': self.db,
-            'getrec': 'n',
-            'out': 'json',
-            'rid': rid,
-            'record': record
-        }
         res = requests.post(url, opts)
         print('[rupdate] Response: %s' % res.status_code)
         return res.text
