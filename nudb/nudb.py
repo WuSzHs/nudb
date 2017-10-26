@@ -139,16 +139,8 @@ class NuDB(object):
         print('[rupdate] Response: %s' % res.status_code)
         return res.text
                 
-    def search(self, query):
-        url = self.api + "query"
-        
-        opts = {
-            'db': self.db,
-            'q': query,
-            'out': 'json'
-        }
-        
+    def search(self, opts):
+        url = self.api + "query"        
         res = requests.get(url, opts)
         print('[search] Response: %s' % res.status_code)
         return res.text
-

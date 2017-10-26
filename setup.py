@@ -3,7 +3,7 @@ import codecs
 
 setup(
     name='nudb',
-    version = '1.0.7',
+    version = '1.0.8',
     description = 'For nudb',
     long_description = codecs.open('docs/README.txt', 'r', 'utf-8').read(),
     author = 'Szu-Hsuan, Wu',
