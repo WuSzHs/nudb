@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 import os, sys, re, codecs, json, requests, tools
 
 class NuDB(object):
 
-    def __init__(self):
-        reload(sys)
-        sys.setdefaultencoding("utf-8")
-        
+    def __init__(self):        
         # default host and port
         host = 'localhost'
         port = '5800'
@@ -17,7 +14,6 @@ class NuDB(object):
     def connect(self, host, port, db):
         self.api = 'http://'+ host + ':' + port + '/nudb/'
         self.db = db
-        print('API: %s, db: %s' % (self.api, self.db))
 
     def rput(self, data, data_type, *recBeg):
         """ data_type: json/text """
@@ -52,8 +48,7 @@ class NuDB(object):
             return "Wrong format. Must be 'json' or 'text'."
 
         res = requests.post(url, opts)
-        print('[rput] Response: %s' % res.status_code)
-        return res.text
+        return res
     
     def fput(self, filePath, data_type, *recBeg):
         """ data_type: json/text """
@@ -77,8 +72,7 @@ class NuDB(object):
                 return 'Must have recBeg.'
 
         res = requests.post(url, opts, files=fileData)
-        print('[fput] Response: %s' % res.status_code)
-        return res.text
+        return res
 
     def rget(self, rid):
         url = self.api + "rget"
@@ -90,8 +84,7 @@ class NuDB(object):
         }
         
         res = requests.get(url, opts)
-        print('[rget] Response: %s' % res.status_code)
-        return res.text
+        return res
 
     def rdel(self, rid):
         url = self.api + "rdel"
@@ -103,8 +96,7 @@ class NuDB(object):
         }
         
         res = requests.post(url, opts)
-        print('[rdel] Response: %s' % res.status_code)
-        return res.text
+        return res
     
     def rupdate(self, rid, data, data_type):
         """ data_type: json/text """
@@ -114,6 +106,7 @@ class NuDB(object):
             'getrec': 'n',
             'out': 'json',
             'rid': rid,
+            'format': data_type,
             'record': data
         }
         
@@ -136,11 +129,9 @@ class NuDB(object):
             return "Wrong format. Must be 'json' or 'text'."
 
         res = requests.post(url, opts)
-        print('[rupdate] Response: %s' % res.status_code)
-        return res.text
+        return res
                 
     def search(self, opts):
         url = self.api + "query"        
         res = requests.get(url, opts)
-        print('[search] Response: %s' % res.status_code)
-        return res.text
+        return res
