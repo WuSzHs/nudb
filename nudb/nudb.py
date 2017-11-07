@@ -54,7 +54,7 @@ class NuDB(object):
             return "Wrong format. Must be 'json' or 'text'."
 
         res = requests.post(url, opts)
-        return res
+        return res.text
     
     def fput(self, filePath, data_type, *recBeg):
         """ data_type: json/text """
@@ -78,7 +78,7 @@ class NuDB(object):
                 return 'Must have recBeg.'
 
         res = requests.post(url, opts, files=fileData)
-        return res
+        return res.text
 
     def rget(self, rid):
         url = self.api + "rget"
@@ -90,7 +90,7 @@ class NuDB(object):
         }
         
         res = requests.get(url, opts)
-        return res
+        return res.text
 
     def rdel(self, rid):
         url = self.api + "rdel"
@@ -102,7 +102,7 @@ class NuDB(object):
         }
         
         res = requests.post(url, opts)
-        return res
+        return res.text
     
     def rupdate(self, rid, data, data_type):
         """ data_type: json/text """
@@ -135,9 +135,9 @@ class NuDB(object):
             return "Wrong format. Must be 'json' or 'text'."
 
         res = requests.post(url, opts)
-        return res
+        return res.text
                 
     def search(self, opts):
         url = self.api + "query"        
         res = requests.get(url, opts)
-        return res
+        return res.text
