@@ -1,6 +1,12 @@
 # coding: utf-8
 
-import os, sys, re, codecs, json, requests, tools
+import os
+import re
+import sys
+import json
+import codecs
+import requests
+import tools
 
 class NuDB(object):
 
