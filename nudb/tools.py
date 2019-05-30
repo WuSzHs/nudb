@@ -3,6 +3,13 @@
 import json
 
 def check_JSON(data):
+    """
+    檢查 JSON 資料格式  
+    return:
+    - 1: JSON object
+    - 2: JSON string
+    - -1: 格式錯誤
+    """
     if isinstance(data, dict):
         return 1        
     elif isinstance(data, str):
