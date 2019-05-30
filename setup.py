@@ -3,9 +3,10 @@ import codecs
 
 setup(
     name='nudb',
-    version = '1.1.0',
+    version = '1.1.1',
     description = 'For nudb',
-    long_description = codecs.open('docs/README.txt', 'r', 'utf-8').read(),
+    long_description = codecs.open('README.md', 'r', 'utf-8').read(),
+    long_description_content_type='text/markdown',
     author = 'Szu-Hsuan, Wu',
     author_email = 'shuan0713@gmail.com',
     url = 'https://github.com/wshs0713/nudb',
