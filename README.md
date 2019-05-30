@@ -17,6 +17,7 @@ Menu:
     - [Put record from file](#put-record-from-file)
     - [Delete record by rid or key](#delete-record-by-rid-or-key)
     - [Update record](#update-record)
+  - [Change log](#change-log)
 
 ## Install
 
@@ -305,3 +306,5 @@ result = nudb.rupdate(data_id, data, data_type, search_field='rid', update_metho
   - replaceRecord: 取代整筆資料 (Default)
   - replaceField: 取代指定欄位的資料
 - timeout: 設定 timeout，單位為 s，預設是 10s.
+
+## [Change log](/CHANGELOG.md)
