@@ -144,12 +144,13 @@ class Nudb(object):
         res = requests.post(url, options, timeout=timeout)
         return json.loads(res.text)
     
-    def rupdate(self, rid, data, data_type, timeout=10):
+    def rupdate(self, rid, data, data_type, update_method='replaceRecord', timeout=10):
         """ 
-        Update record by rid. 
+        Update record by rid.  
         rid: record ID  
         data: Data   
-        data_type: json/text  
+        data_type: json/text 
+        update_method: 更新方式 (replaceRecord or replaceField) 
         timeout: timeout (s), default is 10s.
         """
 
@@ -165,6 +166,8 @@ class Nudb(object):
                 data = json.dumps(data)
             elif check < 1:
                 raise ParametersParseException(custom_error_message['WRONG_FORMAT'])
+        if update_method != 'replaceRecord' and update_method != 'replaceField':
+            raise ParametersParseException(custom_error_message['WRONG_UPDATE_METHOD_PARAMETER'])
 
         url = self.api + 'rupdate'
         options = {
@@ -172,14 +175,18 @@ class Nudb(object):
             'getrec': 'n',
             'out': 'json',
             'rid': rid,
-            'format': data_type,
-            'record': data
+            'format': data_type
         }
 
         if data_type == 'text':
             # replace \\ -> \
-            options['record'] = re.sub('\\\\\\\\','\\\\', data)
+            data = re.sub('\\\\\\\\','\\\\', data)
         
+        if update_method == 'replaceRecord':
+            options['record'] = data
+        else:
+            options['field'] = data
+
         res = requests.post(url, options, timeout=timeout)
         return json.loads(res.text)
                 

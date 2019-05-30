@@ -63,7 +63,7 @@ result = nudb.get_DB_info(timeout=10)
 
 **參數說明**  
 
-- timeout: 設定 timeout，單位為 s，預設是 10 s.
+- timeout: 設定 timeout，單位為 s，預設是 10s.
 
 ### Search
 
@@ -247,7 +247,7 @@ result = nudb.rget(rid, timeout=10)
 **參數說明**  
   
 - rid: Record ID
-- timeout: 設定 timeout，單位為 s，預設是 10 s.
+- timeout: 設定 timeout，單位為 s，預設是 10s.
 
 ### Put record
 
@@ -261,7 +261,7 @@ result = nudb.rput(data, data_type, rec_beg=None, timeout=10)
 - data: 資料
 - data_type: 資料格式(json or text)
 - rec_beg: record begin pattern, 若資料格式為text則必須有此參數
-- timeout: 設定 timeout，單位為 s，預設是 10 s.
+- timeout: 設定 timeout，單位為 s，預設是 10s.
 
 ### Put record from file
 
@@ -274,7 +274,7 @@ result = nudb.fput(file_path, data_type, rec_beg=None, timeout=60)
 - file_path: 要上傳的檔案
 - data_type: 資料格式(json or text)
 - rec_beg: record begin pattern, 若資料格式為text則必須有此參數
-- timeout: 設定 timeout，單位為 s，預設是 60 s.
+- timeout: 設定 timeout，單位為 s，預設是 60s.
 
 ### Delete record by rid
 
@@ -285,12 +285,12 @@ result = nudb.rdel(rid, timeout=10)
 **參數說明**  
   
 - rid: Record ID, 一次刪除多筆可使用`,`區隔多個 id
-- timeout: 設定 timeout，單位為 s，預設是 10 s.
+- timeout: 設定 timeout，單位為 s，預設是 10s.
 
 ### Update record
 
 ```python
-result = nudb.rupdate(rid, data, data_type, timeout=10)
+result = nudb.rupdate(rid, data, data_type, update_method='replaceRecord', timeout=10)
 ```
 
 **參數說明**  
@@ -298,4 +298,7 @@ result = nudb.rupdate(rid, data, data_type, timeout=10)
 - rid: 要更新的資料rid
 - data: 更新的資料內容
 - data_type: 資料格式(json or text)
-- timeout: 設定 timeout，單位為 s，預設是 10 s.
+- update_method: 更新方式
+  - replaceRecord: 取代整筆資料 (Default)
+  - replaceField: 取代指定欄位的資料
+- timeout: 設定 timeout，單位為 s，預設是 10s.
