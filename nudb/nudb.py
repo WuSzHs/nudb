@@ -23,6 +23,16 @@ class Nudb(object):
         self.api = 'http://%s:%s/nudb/' % (host, port)
         self.db = db
 
+    def get_DB_info(self):
+        url = self.api + 'getDBInfo'
+        options = {
+            'db': self.db,
+            'out': 'json'
+        }
+        
+        res = requests.post(url, options)
+        return json.loads(res.text)
+
     def rput(self, data, data_type, *rec_beg):
         """ 
         Insert data to DB.  

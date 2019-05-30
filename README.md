@@ -10,6 +10,7 @@ Menu:
   - [Usage](#usage)
     - [資料格式](#%E8%B3%87%E6%96%99%E6%A0%BC%E5%BC%8F)
     - [Connect to NUDB](#connect-to-nudb)
+    - [Get DB info](#get-db-info)
     - [Search](#search)
     - [Get record by rid](#get-record-by-rid)
     - [Put record](#put-record)
@@ -53,6 +54,12 @@ nudb.connect('host', 'port', 'db')
 - host: DB host
 - port: DB port
 - db: 指定 DB 名稱
+
+### Get DB info
+
+```python
+result = nudb.get_DB_info()
+```
 
 ### Search
 
