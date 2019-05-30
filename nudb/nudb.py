@@ -110,47 +110,56 @@ class Nudb(object):
         res = requests.post(url, options, files=file_data, timeout=timeout)
         return json.loads(res.text)
 
-    def rget(self, rid, timeout=10):
+    def rget(self, data_id, search_field='rid', timeout=10):
         """
-        Get data by rid.  
-        rid: record ID  
+        Get data by rid or primary key.  
+        data_id: record ID or primary key.  
+        search_field: 搜尋的欄位 (rid or key).  
         timeout: timeout (s), default is 10s.
         """
+
+        if search_field != 'rid' and search_field != 'key':
+            raise ParametersParseException(custom_error_message['WRONG_SEARCH_FIELD_PARAMETER'])
 
         url = self.api + 'rget'
         options = {
             'db': self.db,
-            'rid': rid,
-            'out': 'json'
+            'out': 'json',
+            search_field: data_id
         }
         
         res = requests.get(url, options, timeout=timeout)
         return json.loads(res.text)
 
-    def rdel(self, rid, timeout=10):
+    def rdel(self, data_id, search_field='rid', timeout=10):
         """
-        Delete record by rid.  
-        rid: record ID  
+        Delete record by rid or primary key.  
+        data_id: record ID or primary key.  
+        search_field: 搜尋的欄位 (rid or key).  
         timeout: timeout (s), default is 10s.
         """
-        
+
+        if search_field != 'rid' and search_field != 'key':
+            raise ParametersParseException(custom_error_message['WRONG_SEARCH_FIELD_PARAMETER'])
+
         url = self.api + 'rdel'
         options = {
             'db': self.db,
-            'rid': rid,
-            'out': 'json'
+            'out': 'json',
+            search_field: data_id
         }
         
         res = requests.post(url, options, timeout=timeout)
         return json.loads(res.text)
     
-    def rupdate(self, rid, data, data_type, update_method='replaceRecord', timeout=10):
+    def rupdate(self, data_id, data, data_type, search_field='rid', update_method='replaceRecord', timeout=10):
         """ 
-        Update record by rid.  
-        rid: record ID  
+        Update record by rid or primary key.  
+        data_id: record ID or primary key.  
         data: Data   
-        data_type: json/text 
-        update_method: 更新方式 (replaceRecord or replaceField) 
+        data_type: json/text  
+        search_field: 搜尋的欄位 (rid or key).  
+        update_method: 更新方式 (replaceRecord or replaceField)  
         timeout: timeout (s), default is 10s.
         """
 
@@ -166,6 +175,8 @@ class Nudb(object):
                 data = json.dumps(data)
             elif check < 1:
                 raise ParametersParseException(custom_error_message['WRONG_FORMAT'])
+        if search_field != 'rid' and search_field != 'key':
+            raise ParametersParseException(custom_error_message['WRONG_SEARCH_FIELD_PARAMETER'])
         if update_method != 'replaceRecord' and update_method != 'replaceField':
             raise ParametersParseException(custom_error_message['WRONG_UPDATE_METHOD_PARAMETER'])
 
@@ -174,14 +185,14 @@ class Nudb(object):
             'db': self.db,
             'getrec': 'n',
             'out': 'json',
-            'rid': rid,
-            'format': data_type
+            'format': data_type,
+            search_field: data_id
         }
 
         if data_type == 'text':
             # replace \\ -> \
             data = re.sub('\\\\\\\\','\\\\', data)
-        
+
         if update_method == 'replaceRecord':
             options['record'] = data
         else:

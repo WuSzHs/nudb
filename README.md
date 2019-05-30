@@ -12,10 +12,10 @@ Menu:
     - [Connect to NUDB](#connect-to-nudb)
     - [Get DB info](#get-db-info)
     - [Search](#search)
-    - [Get record by rid](#get-record-by-rid)
+    - [Get record by rid or key](#get-record-by-rid-or-key)
     - [Put record](#put-record)
     - [Put record from file](#put-record-from-file)
-    - [Delete record by rid](#delete-record-by-rid)
+    - [Delete record by rid or key](#delete-record-by-rid-or-key)
     - [Update record](#update-record)
 
 ## Install
@@ -238,15 +238,16 @@ result = nudb.search(options, timeout=10);
 
   - out: 輸出格式 (json or text)
 
-### Get record by rid
+### Get record by rid or key
 
 ```python
-result = nudb.rget(rid, timeout=10)
+result = nudb.rget(data_id, search_field='rid', timeout=10)
 ```
 
 **參數說明**  
   
-- rid: Record ID
+- data_id: Record ID or primary key.
+- search_field: 搜尋的欄位，rid 或 key, 預設是 rid.
 - timeout: 設定 timeout，單位為 s，預設是 10s.
 
 ### Put record
@@ -276,28 +277,30 @@ result = nudb.fput(file_path, data_type, rec_beg=None, timeout=60)
 - rec_beg: record begin pattern, 若資料格式為text則必須有此參數
 - timeout: 設定 timeout，單位為 s，預設是 60s.
 
-### Delete record by rid
+### Delete record by rid or key
 
 ```python
-result = nudb.rdel(rid, timeout=10)
+result = nudb.rdel(data_id, search_field='rid', timeout=10)
 ```
 
 **參數說明**  
   
-- rid: Record ID, 一次刪除多筆可使用`,`區隔多個 id
+- data_id: Record ID 或 primary key, 一次刪除多筆可使用`,`區隔多個 id
+- search_field: 搜尋的欄位，rid 或 key, 預設是 rid.
 - timeout: 設定 timeout，單位為 s，預設是 10s.
 
 ### Update record
 
 ```python
-result = nudb.rupdate(rid, data, data_type, update_method='replaceRecord', timeout=10)
+result = nudb.rupdate(data_id, data, data_type, search_field='rid', update_method='replaceRecord', timeout=10)
 ```
 
 **參數說明**  
 
-- rid: 要更新的資料rid
+- data_id: 要更新的資料rid or primary key
 - data: 更新的資料內容
 - data_type: 資料格式(json or text)
+- search_field: 搜尋的欄位，rid 或 key, 預設是 rid.
 - update_method: 更新方式
   - replaceRecord: 取代整筆資料 (Default)
   - replaceField: 取代指定欄位的資料
