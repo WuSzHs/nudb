@@ -58,8 +58,12 @@ nudb.connect('host', 'port', 'db')
 ### Get DB info
 
 ```python
-result = nudb.get_DB_info()
+result = nudb.get_DB_info(timeout=10)
 ```
+
+**參數說明**  
+
+- timeout: 設定 timeout，單位為 s，預設是 10 s.
 
 ### Search
 
@@ -84,11 +88,12 @@ options = {
     'select': '@title:,@body:,@viewcount:',
     'out': 'json'
 }
-result = nudb.search(options);
+result = nudb.search(options, timeout=10);
 ```
 
 **參數說明**  
 
+- timeout: 設定 timeout，單位為 s，預設是 10 s.
 - options: query options
   - db: 指定DB
   - matchmode
@@ -236,18 +241,19 @@ result = nudb.search(options);
 ### Get record by rid
 
 ```python
-result = nudb.rget(rid)
+result = nudb.rget(rid, timeout=10)
 ```
 
 **參數說明**  
   
 - rid: Record ID
+- timeout: 設定 timeout，單位為 s，預設是 10 s.
 
 ### Put record
 
 ```python
 # format: json or text
-result = nudb.rput(data, data_type, rec_beg)
+result = nudb.rput(data, data_type, rec_beg=None, timeout=10)
 ```
 
 **參數說明**  
@@ -255,11 +261,12 @@ result = nudb.rput(data, data_type, rec_beg)
 - data: 資料
 - data_type: 資料格式(json or text)
 - rec_beg: record begin pattern, 若資料格式為text則必須有此參數
+- timeout: 設定 timeout，單位為 s，預設是 10 s.
 
 ### Put record from file
 
 ```python
-result = nudb.fput(file_path, data_type, rec_beg)
+result = nudb.fput(file_path, data_type, rec_beg=None, timeout=60)
 ```
 
 **參數說明**  
@@ -267,21 +274,23 @@ result = nudb.fput(file_path, data_type, rec_beg)
 - file_path: 要上傳的檔案
 - data_type: 資料格式(json or text)
 - rec_beg: record begin pattern, 若資料格式為text則必須有此參數
+- timeout: 設定 timeout，單位為 s，預設是 60 s.
 
 ### Delete record by rid
 
 ```python
-result = nudb.rdel(rid)
+result = nudb.rdel(rid, timeout=10)
 ```
 
 **參數說明**  
   
 - rid: Record ID, 一次刪除多筆可使用`,`區隔多個 id
+- timeout: 設定 timeout，單位為 s，預設是 10 s.
 
 ### Update record
 
 ```python
-result = nudb.rupdate(rid, data, data_type)
+result = nudb.rupdate(rid, data, data_type, timeout=10)
 ```
 
 **參數說明**  
@@ -289,3 +298,4 @@ result = nudb.rupdate(rid, data, data_type)
 - rid: 要更新的資料rid
 - data: 更新的資料內容
 - data_type: 資料格式(json or text)
+- timeout: 設定 timeout，單位為 s，預設是 10 s.

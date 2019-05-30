@@ -23,23 +23,30 @@ class Nudb(object):
         self.api = 'http://%s:%s/nudb/' % (host, port)
         self.db = db
 
-    def get_DB_info(self):
+    def get_DB_info(self, timeout=10):
+        """
+        Get DB info.  
+        timeout: timeout (s), default is 10s.
+        """
+
         url = self.api + 'getDBInfo'
         options = {
             'db': self.db,
             'out': 'json'
         }
         
-        res = requests.post(url, options)
+        res = requests.post(url, options, timeout=timeout)
         return json.loads(res.text)
 
-    def rput(self, data, data_type, *rec_beg):
+    def rput(self, data, data_type, rec_beg=None, timeout=10):
         """ 
         Insert data to DB.  
         data: Data.  
         data_type: json/text  
-        rec_beg: record begin pattern.
+        rec_beg: record begin pattern.  
+        timeout: timeout (s), default is 10s.
         """
+
         if data_type != 'text' and data_type != 'json':
             raise ParametersParseException(custom_error_message['WRONG_FORMAT_PARAMETER'])
         if data_type == 'text':
@@ -67,17 +74,18 @@ class Nudb(object):
         if data_type == 'text':
             # replace \\ -> \
             options['data'] = re.sub('\\\\\\\\', '\\\\', data)
-            options['recbeg'] = rec_beg[0]
+            options['recbeg'] = rec_beg
 
-        res = requests.post(url, options)
+        res = requests.post(url, options, timeout=timeout)
         return json.loads(res.text)
     
-    def fput(self, file_path, data_type, *rec_beg):
+    def fput(self, file_path, data_type, rec_beg=None, timeout=60):
         """ 
         Insert data from file.
         file_path: File path.    
         data_type: json/text  
-        rec_beg: record begin pattern.
+        rec_beg: record begin pattern.  
+        timeout: timeout (s), default is 60s.
         """
 
         if not os.path.exists(file_path):
@@ -97,15 +105,16 @@ class Nudb(object):
         }
 
         if data_type == 'text':
-            options['recbeg'] = rec_beg[0]
+            options['recbeg'] = rec_beg
 
-        res = requests.post(url, options, files=file_data)
+        res = requests.post(url, options, files=file_data, timeout=timeout)
         return json.loads(res.text)
 
-    def rget(self, rid):
+    def rget(self, rid, timeout=10):
         """
         Get data by rid.  
-        rid: record ID
+        rid: record ID  
+        timeout: timeout (s), default is 10s.
         """
 
         url = self.api + 'rget'
@@ -115,13 +124,14 @@ class Nudb(object):
             'out': 'json'
         }
         
-        res = requests.get(url, options)
+        res = requests.get(url, options, timeout=timeout)
         return json.loads(res.text)
 
-    def rdel(self, rid):
+    def rdel(self, rid, timeout=10):
         """
         Delete record by rid.  
-        rid: record ID
+        rid: record ID  
+        timeout: timeout (s), default is 10s.
         """
         
         url = self.api + 'rdel'
@@ -131,16 +141,18 @@ class Nudb(object):
             'out': 'json'
         }
         
-        res = requests.post(url, options)
+        res = requests.post(url, options, timeout=timeout)
         return json.loads(res.text)
     
-    def rupdate(self, rid, data, data_type):
+    def rupdate(self, rid, data, data_type, timeout=10):
         """ 
         Update record by rid. 
         rid: record ID  
         data: Data   
         data_type: json/text  
+        timeout: timeout (s), default is 10s.
         """
+
         if data_type != 'text' and data_type != 'json':
             raise ParametersParseException(custom_error_message['WRONG_FORMAT_PARAMETER'])
         if data_type == 'text' and not isinstance(data, str):
@@ -168,15 +180,15 @@ class Nudb(object):
             # replace \\ -> \
             options['record'] = re.sub('\\\\\\\\','\\\\', data)
         
-        res = requests.post(url, options)
+        res = requests.post(url, options, timeout=timeout)
         return json.loads(res.text)
                 
-    def search(self, options):
+    def search(self, options, timeout=10):
         if not options:
             raise ParametersParseException(custom_error_message['MISSING_QUERY_PARAMETER'])
 
         url = self.api + 'query'
-        res = requests.get(url, options)
+        res = requests.get(url, options, timeout=timeout)
 
         if 'out' in options and options['out'] == 'json':
             return json.loads(res.text)
