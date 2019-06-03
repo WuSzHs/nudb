@@ -1,1 +1,1 @@
-from nudb import Nudb
+from nudb.nudb import Nudb
