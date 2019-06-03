@@ -6,9 +6,9 @@ import sys
 import json
 import codecs
 import requests
-import tools
-from error import NudbException, ParametersParseException
-from customErrorMessage import custom_error_message
+import nudb.tools
+from nudb.error import NudbException, ParametersParseException
+from nudb.customErrorMessage import custom_error_message
 
 class Nudb(object):
 

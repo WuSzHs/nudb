@@ -3,7 +3,7 @@ import codecs
 
 setup(
     name='nudb',
-    version = '1.1.2',
+    version = '1.1.3',
     description = 'For nudb',
     long_description = codecs.open('README.md', 'r', 'utf-8').read(),
     long_description_content_type = 'text/markdown',
