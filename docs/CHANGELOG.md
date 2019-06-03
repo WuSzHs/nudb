@@ -1,5 +1,11 @@
 # Change log
 
+## v1.1.3
+
+Date: 2019-06-03  
+
+- Fixed import error.
+
 ## v1.1.2
 
 Date: 2019-06-03  
