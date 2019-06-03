@@ -307,4 +307,4 @@ result = nudb.rupdate(data_id, data, data_type, search_field='rid', update_metho
   - replaceField: 取代指定欄位的資料
 - timeout: 設定 timeout，單位為 s，預設是 10s.
 
-## [Change log](/CHANGELOG.md)
+## [Change log](/docs/CHANGELOG.md)
