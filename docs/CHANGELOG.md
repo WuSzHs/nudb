@@ -1,8 +1,14 @@
 # Change log
 
+## v1.1.2
+
+Date: 2019-06-03  
+
+- Fixed error: cannot import 'NuDB'.
+
 ## v1.1.1
 
-Date: 2019-05-30
+Date: 2019-05-30  
 
 - 可取得 DB 資訊 (getDBInfo)
 - 修改 Error Hanlder
