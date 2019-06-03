@@ -3,12 +3,12 @@ import codecs
 
 setup(
     name='nudb',
-    version = '1.1.1',
+    version = '1.1.2',
     description = 'For nudb',
     long_description = codecs.open('README.md', 'r', 'utf-8').read(),
-    long_description_content_type='text/markdown',
+    long_description_content_type = 'text/markdown',
     author = 'Szu-Hsuan, Wu',
-    author_email = 'shuan0713@gmail.com',
+    author_email = 'shuan@csie.io',
     url = 'https://github.com/wshs0713/nudb',
     packages = ['nudb'],
     keywords = ['nudb'],
