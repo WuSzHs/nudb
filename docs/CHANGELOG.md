@@ -1,5 +1,12 @@
 # Change log
 
+## v1.1.4
+
+Date: 2019-06-10
+
+- Fixed bug: 無法 rput array of object.
+- Fixed import error.
+
 ## v1.1.3
 
 Date: 2019-06-03  
