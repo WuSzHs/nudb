@@ -6,7 +6,7 @@ import sys
 import json
 import codecs
 import requests
-import nudb.tools
+from nudb.tools import check_JSON
 from nudb.error import NudbException, ParametersParseException
 from nudb.customErrorMessage import custom_error_message
 
@@ -56,7 +56,7 @@ class Nudb(object):
                 raise ParametersParseException(custom_error_message['MISSING_RECBEG_PARAMETER'])
         if data_type == 'json':
             # 檢查為是否為正確的JSON格式, 若正確則判斷是JSON object 或 string
-            check = tools.check_JSON(data)
+            check = check_JSON(data)
             if check == 1:
                 # JSON object
                 data = json.dumps(data)
@@ -169,7 +169,7 @@ class Nudb(object):
             raise ParametersParseException(custom_error_message['WRONG_FORMAT'])
         if data_type == 'json':
             # 檢查為是否為正確的JSON格式, 若正確則判斷是JSON object 或 string
-            check = tools.check_JSON(data)
+            check = check_JSON(data)
             if check == 1:
                 # JSON object
                 data = json.dumps(data)
